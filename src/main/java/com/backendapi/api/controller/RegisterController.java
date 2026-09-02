@@ -4,6 +4,7 @@ package com.backendapi.api.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,5 +70,9 @@ public class RegisterController {
         return new ResponseEntity<>(lr.getLoginResponseDto(), HttpStatus.ACCEPTED);
     }
 
-    
+    @GetMapping("/p")
+    String test(){
+        return "Hello Auth Bhai";
+    }
+
 }
