@@ -12,21 +12,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity , JwtAuthFilter jwtAuthFilter){
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtAuthFilter jwtAuthFilter) {
         httpSecurity
-        .csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(auth ->auth
-            .requestMatchers("/api/","/api/login")
-            .permitAll()
-            .anyRequest()
-            .authenticated()
-        )
-        .addFilterBefore(jwtAuthFilter,UsernamePasswordAuthenticationFilter.class);
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/register", "/api/login")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 }

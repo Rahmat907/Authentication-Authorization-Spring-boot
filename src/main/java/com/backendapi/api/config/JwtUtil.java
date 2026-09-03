@@ -16,28 +16,28 @@ public class JwtUtil {
 
     private final String SECRET_KEY = "rahmatalijodwithalwayswithrafiyajamal";
 
-    private SecretKey getSigningKey(){
+    private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
-    public String generateToken(String email,Long id, Role role){
+    public String generateToken(String email, Long id, Role role) {
         return Jwts.builder()
-        .subject(email)
-        .claim("id", id)
-        .claim("role", role.name())
-        .issuedAt(new Date())
-        .expiration(new Date(System.currentTimeMillis() +1000 * 60 * 60))
-        .signWith(getSigningKey())
-        .compact();
+                .subject(email)
+                .claim("id", id)
+                .claim("role", role.name())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .signWith(getSigningKey())
+                .compact();
     }
 
-    public String extractEmail(String token){
+    public String extractEmail(String token) {
         return Jwts.parser()
-            .verifyWith(getSigningKey())
-            .build()
-            .parseSignedClaims(token)
-            .getPayload()
-            .getSubject();
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
     }
-    
+
 }

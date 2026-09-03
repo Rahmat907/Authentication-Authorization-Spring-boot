@@ -5,5 +5,5 @@ public enum LoginResult {
     SUCCESS,
     FAIL,
     NOT_FOUND
-    
+
 }
