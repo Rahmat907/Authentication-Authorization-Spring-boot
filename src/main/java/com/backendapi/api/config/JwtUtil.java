@@ -22,7 +22,7 @@ public class JwtUtil {
 
     public String generateToken(String email, Long id, Role role) {
         return Jwts.builder()
-                .subject(email)
+                .subject(email) // yeah per hamlog token main email,id and role dal rahe hai 
                 .claim("id", id)
                 .claim("role", role.name())
                 .issuedAt(new Date())
@@ -31,13 +31,13 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String extractEmail(String token) {
+    public String extractEmail(String token) { // yeah per extract kar rahe hai 
         return Jwts.parser()
                 .verifyWith(getSigningKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
-                .getSubject();
+                .getSubject();   
     }
 
 }
