@@ -26,5 +26,4 @@ public class ProductModel {
     @Column(nullable = false)
     private String description;
 
-    
 }

@@ -1,5 +1,7 @@
 package com.backendapi.api.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -11,24 +13,25 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backendapi.api.dtos.reqdto.LogRequestDto;
 import com.backendapi.api.dtos.reqdto.RegisterRequestDTO;
 import com.backendapi.api.dtos.respdto.WrapLoginResultAndDto;
+import com.backendapi.api.model.UserModel;
 import com.backendapi.api.model.enums.LoginResult;
 import com.backendapi.api.model.enums.RegisterResult;
-import com.backendapi.api.service.RegisterService;
+import com.backendapi.api.service.UserService;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/")
-public class RegisterController {
+public class UserController {
 
-    private RegisterService registerService;
+    private UserService userService;
 
-    RegisterController(RegisterService registerService) {
-        this.registerService = registerService;
+    UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/register")
     ResponseEntity<String> registered(@Valid @RequestBody RegisterRequestDTO newUser) {
-        RegisterResult r = registerService.createUser(newUser);
+        RegisterResult r = userService.createUser(newUser);
         if (r == RegisterResult.DUPLICATE_USER) {
             return new ResponseEntity<>("Already Username/gmail ragistered", HttpStatus.CONFLICT);
         } else if (r == RegisterResult.ERROR) {
@@ -39,7 +42,7 @@ public class RegisterController {
 
     @PostMapping("/login")
     ResponseEntity<?> logging(@RequestBody LogRequestDto logRequestDto) {
-        WrapLoginResultAndDto lr = registerService.login(logRequestDto);
+        WrapLoginResultAndDto lr = userService.login(logRequestDto);
         if (lr.getLoginResult() == LoginResult.FAIL) {
             return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
         } else if (lr.getLoginResult() == LoginResult.NOT_FOUND) {
@@ -54,5 +57,9 @@ public class RegisterController {
     String test(Authentication authentication) {
         return "Hello " + authentication.getName();
     }
-
+    
+    @GetMapping("/user")
+    ResponseEntity<List<UserModel>> getAllUser(){
+        return new ResponseEntity<>(userService.fetchAllUser(),HttpStatus.OK) ;
+    }
 }

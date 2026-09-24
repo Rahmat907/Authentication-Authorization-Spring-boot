@@ -1,7 +1,7 @@
 package com.backendapi.api.service;
 
 import java.util.Optional;
-
+import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,23 +14,23 @@ import com.backendapi.api.model.UserModel;
 import com.backendapi.api.model.enums.LoginResult;
 import com.backendapi.api.model.enums.RegisterResult;
 import com.backendapi.api.model.enums.Role;
-import com.backendapi.api.repo.RegisterRepo;
+import com.backendapi.api.repo.UserRepo;
 
 @Service
-public class RegisterService {
-    private RegisterRepo registerRepo;
+public class UserService {
+    private UserRepo userRepo;
     private PasswordEncoder passwordEncoder;
     private JwtUtil jwtUtil;
 
     // this is constructor injection
-    RegisterService(RegisterRepo registerRepo, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
-        this.registerRepo = registerRepo;
+    UserService(UserRepo userRepo, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+        this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
     }
 
     public RegisterResult createUser(RegisterRequestDTO userDto) {
-        if (registerRepo.existsByEmail(userDto.getEmail()) || registerRepo.existsByUserName(userDto.getUserName()))
+        if (userRepo.existsByEmail(userDto.getEmail()) || userRepo.existsByUserName(userDto.getUserName()))
             return RegisterResult.DUPLICATE_USER;
         UserModel newUser = new UserModel();
         newUser.setUserName(userDto.getUserName());
@@ -38,7 +38,7 @@ public class RegisterService {
         newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
         newUser.setRole(Role.USER);
         try {
-            registerRepo.save(newUser);
+            userRepo.save(newUser);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return RegisterResult.ERROR;
@@ -48,7 +48,7 @@ public class RegisterService {
 
     public WrapLoginResultAndDto login(LogRequestDto logRequestDto) {
         try {
-            Optional<UserModel> ou = registerRepo.findByEmail(logRequestDto.getEmail());
+            Optional<UserModel> ou = userRepo.findByEmail(logRequestDto.getEmail());
             if (ou.isEmpty())
                 return new WrapLoginResultAndDto(LoginResult.NOT_FOUND, null);
             UserModel um = ou.get();
@@ -65,5 +65,10 @@ public class RegisterService {
             System.out.println(e.getMessage());
             return new WrapLoginResultAndDto(LoginResult.FAIL, null);
         }
+    }
+
+    public List<UserModel> fetchAllUser(){
+
+        return null;
     }
 }

@@ -7,19 +7,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.backendapi.api.model.UserModel;
-import com.backendapi.api.repo.RegisterRepo;
+import com.backendapi.api.repo.UserRepo;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    private final RegisterRepo registerRepo;
+    private final UserRepo userRepo;
 
-    public CustomUserDetailsService(RegisterRepo registerRepo) {
-        this.registerRepo = registerRepo;
+    public CustomUserDetailsService(UserRepo userRepo) {
+        this.userRepo = userRepo;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserModel user = registerRepo.findByEmail(username)
+        UserModel user = userRepo.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return User.builder()
