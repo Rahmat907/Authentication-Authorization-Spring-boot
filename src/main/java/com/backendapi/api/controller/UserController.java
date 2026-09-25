@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,5 +62,16 @@ public class UserController {
     @GetMapping("/user")
     ResponseEntity<List<UserModel>> getAllUser(){
         return new ResponseEntity<>(userService.fetchAllUser(),HttpStatus.OK) ;
+    }
+
+    @GetMapping("/user/{id}")
+    ResponseEntity<UserModel> getUserId(@PathVariable  Long id){
+        return userService.fetchUser(id)
+        .map(ResponseEntity:: ok).orElseGet(()-> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/user/update")
+    ResponseEntity<String> updateUser(){
+        return null;
     }
 }

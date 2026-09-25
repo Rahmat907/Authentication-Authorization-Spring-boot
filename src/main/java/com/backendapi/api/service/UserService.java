@@ -68,7 +68,19 @@ public class UserService {
     }
 
     public List<UserModel> fetchAllUser(){
+        return userRepo.findAll();
+    }
 
-        return null;
+    public Optional<UserModel> fetchUser(Long id){
+        return userRepo.findById(id);
+    }
+    
+    public boolean updateUser(Long id , UserModel userModel){
+        return userRepo.findById(id).
+        map(existingUser -> {
+            existingUser.setEmail(userModel.getEmail());
+            existingUser.setUserName(userModel.getUserName());
+            return true;
+        }).orElse(false);
     }
 }
