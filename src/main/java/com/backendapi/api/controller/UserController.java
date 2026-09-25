@@ -8,11 +8,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.backendapi.api.dtos.reqdto.LogRequestDto;
 import com.backendapi.api.dtos.reqdto.RegisterRequestDTO;
+import com.backendapi.api.dtos.reqdto.UpdataUserDto;
 import com.backendapi.api.dtos.respdto.WrapLoginResultAndDto;
 import com.backendapi.api.model.UserModel;
 import com.backendapi.api.model.enums.LoginResult;
@@ -70,8 +72,10 @@ public class UserController {
         .map(ResponseEntity:: ok).orElseGet(()-> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/user/update")
-    ResponseEntity<String> updateUser(){
-        return null;
+    @PutMapping ("/user/update/{id}")
+    ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody  UpdataUserDto UpdataUserDto){
+        if(userService.updateUser(id, UpdataUserDto)) 
+            return new ResponseEntity<>("User updated successfully",HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

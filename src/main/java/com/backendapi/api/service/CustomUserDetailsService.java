@@ -28,4 +28,15 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .roles(user.getRole().name())
                 .build();
     }
+
+     public UserDetails loadUserById(Long id) {
+        UserModel user = userRepo.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+
+        return User.builder()
+                .username(user.getEmail())
+                .password(user.getPassword())
+                .roles(user.getRole().name())
+                .build();
+    }
 }

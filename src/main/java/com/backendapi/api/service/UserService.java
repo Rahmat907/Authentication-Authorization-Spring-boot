@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.backendapi.api.config.JwtUtil;
 import com.backendapi.api.dtos.reqdto.LogRequestDto;
 import com.backendapi.api.dtos.reqdto.RegisterRequestDTO;
+import com.backendapi.api.dtos.reqdto.UpdataUserDto;
 import com.backendapi.api.dtos.respdto.LoginResponseDto;
 import com.backendapi.api.dtos.respdto.WrapLoginResultAndDto;
 import com.backendapi.api.model.UserModel;
@@ -75,11 +76,12 @@ public class UserService {
         return userRepo.findById(id);
     }
     
-    public boolean updateUser(Long id , UserModel userModel){
+    public boolean updateUser(Long id ,UpdataUserDto updataUserDto){
         return userRepo.findById(id).
         map(existingUser -> {
-            existingUser.setEmail(userModel.getEmail());
-            existingUser.setUserName(userModel.getUserName());
+            existingUser.setEmail(updataUserDto.getEmail());
+            existingUser.setUserName(updataUserDto.getUserName());
+            userRepo.save(existingUser);
             return true;
         }).orElse(false);
     }
