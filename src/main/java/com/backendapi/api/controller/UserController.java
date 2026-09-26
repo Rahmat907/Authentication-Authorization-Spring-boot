@@ -73,7 +73,7 @@ public class UserController {
     }
 
     @PutMapping ("/user/update/{id}")
-    ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody  UpdataUserDto UpdataUserDto){
+    ResponseEntity<String> updateUser(@PathVariable Long id,@Valid @RequestBody  UpdataUserDto UpdataUserDto){
         if(userService.updateUser(id, UpdataUserDto)) 
             return new ResponseEntity<>("User updated successfully",HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

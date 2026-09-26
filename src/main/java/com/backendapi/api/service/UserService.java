@@ -14,7 +14,6 @@ import com.backendapi.api.dtos.respdto.WrapLoginResultAndDto;
 import com.backendapi.api.model.UserModel;
 import com.backendapi.api.model.enums.LoginResult;
 import com.backendapi.api.model.enums.RegisterResult;
-import com.backendapi.api.model.enums.Role;
 import com.backendapi.api.repo.UserRepo;
 
 @Service
