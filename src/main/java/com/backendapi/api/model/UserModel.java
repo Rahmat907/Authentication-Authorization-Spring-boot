@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 public class UserModel {
     @Id
-    @GeneratedValue(strategy =  GenerationType.AUTO)
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false , unique = true)
     private String userName;
@@ -31,6 +31,6 @@ public class UserModel {
     private String password;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private Role role = Role.USER;
 
 }

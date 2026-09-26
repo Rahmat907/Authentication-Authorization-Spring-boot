@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    ResponseEntity<?> logging(@RequestBody LogRequestDto logRequestDto) {
+    ResponseEntity<?> logging(@Valid @RequestBody LogRequestDto logRequestDto) {
         WrapLoginResultAndDto lr = userService.login(logRequestDto);
         if (lr.getLoginResult() == LoginResult.FAIL) {
             return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
