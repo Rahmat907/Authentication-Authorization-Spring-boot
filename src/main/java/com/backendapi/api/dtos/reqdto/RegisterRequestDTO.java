@@ -1,11 +1,12 @@
 package com.backendapi.api.dtos.reqdto;
-
+import com.backendapi.api.model.Address;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 @Data
 @AllArgsConstructor
@@ -22,4 +23,6 @@ public class RegisterRequestDTO {
     @NotBlank(message = "email is required")
     @Email(message = "Invalid email formate")
     private String email;
+
+    private Address address;
 }

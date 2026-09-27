@@ -36,6 +36,7 @@ public class UserService {
         newUser.setUserName(userDto.getUserName());
         newUser.setEmail(userDto.getEmail());
         newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        newUser.setAddress(userDto.getAddress());
         try {
             userRepo.save(newUser);
         } catch (Exception e) {

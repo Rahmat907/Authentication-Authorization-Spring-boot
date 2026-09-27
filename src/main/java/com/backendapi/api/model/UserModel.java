@@ -1,5 +1,6 @@
 package com.backendapi.api.model;
 
+import com.backendapi.api.model.Address;
 import com.backendapi.api.model.enums.Role;
 
 import jakarta.persistence.CascadeType;
@@ -22,7 +23,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.backendapi.api.model.Address;
+
 
 
 @Entity
