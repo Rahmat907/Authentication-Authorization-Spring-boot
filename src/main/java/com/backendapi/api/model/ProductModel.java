@@ -18,7 +18,7 @@ import lombok.Data;
 public class ProductModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer productId;
+    private Long productId;
 
     @Column(nullable = false)
     private String title;

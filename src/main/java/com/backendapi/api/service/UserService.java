@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.backendapi.api.config.JwtUtil;
 import com.backendapi.api.dtos.reqdto.LogRequestDto;
 import com.backendapi.api.dtos.reqdto.RegisterRequestDTO;
-import com.backendapi.api.dtos.reqdto.UpdataUserDto;
 import com.backendapi.api.dtos.respdto.AddressDto;
 import com.backendapi.api.dtos.respdto.LoginResponseDto;
 import com.backendapi.api.dtos.respdto.UserResponse;
@@ -18,6 +17,7 @@ import com.backendapi.api.model.UserModel;
 import com.backendapi.api.model.enums.LoginResult;
 import com.backendapi.api.model.enums.RegisterResult;
 import com.backendapi.api.repo.UserRepo;
+import com.backendapi.api.model.Address;
 
 @Service
 public class UserService {
@@ -36,10 +36,7 @@ public class UserService {
         if (userRepo.existsByEmail(userDto.getEmail()) || userRepo.existsByUserName(userDto.getUserName()))
             return RegisterResult.DUPLICATE_USER;
         UserModel newUser = new UserModel();
-        newUser.setUserName(userDto.getUserName());
-        newUser.setEmail(userDto.getEmail());
-        newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        // newUser.setAddress();
+        updateUserModel(newUser,userDto);
         try {
             userRepo.save(newUser);
         } catch (Exception e) {
@@ -78,11 +75,10 @@ public class UserService {
         return userRepo.findById(id).map(this:: maptoUserRespose);
     }
     
-    public boolean updateUser(Long id ,UpdataUserDto updataUserDto){
+    public boolean updateUser(Long id ,RegisterRequestDTO updateUserDto){
         return userRepo.findById(id).
         map(existingUser -> {
-            existingUser.setEmail(updataUserDto.getEmail());
-            existingUser.setUserName(updataUserDto.getUserName());
+            updateUserModel(existingUser, updateUserDto);
             userRepo.save(existingUser);
             return true;
         }).orElse(false);
@@ -105,5 +101,21 @@ public class UserService {
         response.setAddress(addressDto);
         }
         return response;
+    }
+
+    public void updateUserModel(UserModel userModel,RegisterRequestDTO userRequest){
+        userModel.setUserName(userRequest.getUserName());
+        userModel.setEmail(userRequest.getEmail());
+        userModel.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        if(userRequest.getAddress() != null){
+            Address address = new Address();
+            address.setStreet(userRequest.getAddress().getStreet());
+            address.setCity(userRequest.getAddress().getCity());
+            address.setCountry(userRequest.getAddress().getCountry());
+            address.setNotes(userRequest.getAddress().getNotes());
+            address.setPincode(userRequest.getAddress().getPincode());
+            address.setPhoneno(userRequest.getAddress().getPhoneno());
+            userModel.setAddress(address);
+        }
     }
 }

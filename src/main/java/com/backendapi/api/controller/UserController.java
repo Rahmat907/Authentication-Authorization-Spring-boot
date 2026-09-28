@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.backendapi.api.dtos.reqdto.LogRequestDto;
 import com.backendapi.api.dtos.reqdto.RegisterRequestDTO;
-import com.backendapi.api.dtos.reqdto.UpdataUserDto;
 import com.backendapi.api.dtos.respdto.UserResponse;
 import com.backendapi.api.dtos.respdto.WrapLoginResultAndDto;
-import com.backendapi.api.model.UserModel;
 import com.backendapi.api.model.enums.LoginResult;
 import com.backendapi.api.model.enums.RegisterResult;
 import com.backendapi.api.service.UserService;
@@ -74,8 +72,8 @@ public class UserController {
     }
 
     @PutMapping ("/user/update/{id}")
-    ResponseEntity<String> updateUser(@PathVariable Long id,@Valid @RequestBody  UpdataUserDto UpdataUserDto){
-        if(userService.updateUser(id, UpdataUserDto)) 
+    ResponseEntity<String> updateUser(@PathVariable Long id,@Valid @RequestBody RegisterRequestDTO updateUserDto){
+        if(userService.updateUser(id, updateUserDto)) 
             return new ResponseEntity<>("User updated successfully",HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
