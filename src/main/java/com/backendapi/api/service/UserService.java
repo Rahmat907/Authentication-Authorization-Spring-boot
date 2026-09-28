@@ -1,6 +1,7 @@
 package com.backendapi.api.service;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,9 @@ import com.backendapi.api.config.JwtUtil;
 import com.backendapi.api.dtos.reqdto.LogRequestDto;
 import com.backendapi.api.dtos.reqdto.RegisterRequestDTO;
 import com.backendapi.api.dtos.reqdto.UpdataUserDto;
+import com.backendapi.api.dtos.respdto.AddressDto;
 import com.backendapi.api.dtos.respdto.LoginResponseDto;
+import com.backendapi.api.dtos.respdto.UserResponse;
 import com.backendapi.api.dtos.respdto.WrapLoginResultAndDto;
 import com.backendapi.api.model.UserModel;
 import com.backendapi.api.model.enums.LoginResult;
@@ -36,7 +39,7 @@ public class UserService {
         newUser.setUserName(userDto.getUserName());
         newUser.setEmail(userDto.getEmail());
         newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        newUser.setAddress(userDto.getAddress());
+        // newUser.setAddress();
         try {
             userRepo.save(newUser);
         } catch (Exception e) {
@@ -67,12 +70,12 @@ public class UserService {
         }
     }
 
-    public List<UserModel> fetchAllUser(){
-        return userRepo.findAll();
+    public List<UserResponse> fetchAllUser(){
+        return userRepo.findAll().stream().map(this::maptoUserRespose).collect(Collectors.toList());
     }
 
-    public Optional<UserModel> fetchUser(Long id){
-        return userRepo.findById(id);
+    public Optional<UserResponse> fetchUser(Long id){
+        return userRepo.findById(id).map(this:: maptoUserRespose);
     }
     
     public boolean updateUser(Long id ,UpdataUserDto updataUserDto){
@@ -83,5 +86,24 @@ public class UserService {
             userRepo.save(existingUser);
             return true;
         }).orElse(false);
+    }
+
+    public UserResponse maptoUserRespose(UserModel userModel){
+        UserResponse response = new UserResponse();
+        response.setId(String.valueOf(userModel.getId()));
+        response.setUserName(userModel.getUserName());
+        response.setEmail(userModel.getEmail());
+        response.setRole(userModel.getRole());
+        if(userModel.getAddress() != null){
+            AddressDto addressDto = new AddressDto();
+            addressDto.setStreet(userModel.getAddress().getStreet());
+            addressDto.setCity(userModel.getAddress().getCity());
+            addressDto.setCountry(userModel.getAddress().getCountry());
+            addressDto.setNotes(userModel.getAddress().getNotes());
+            addressDto.setPhoneno(userModel.getAddress().getPhoneno());
+            addressDto.setPincode(userModel.getAddress().getPincode());
+        response.setAddress(addressDto);
+        }
+        return response;
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backendapi.api.dtos.reqdto.LogRequestDto;
 import com.backendapi.api.dtos.reqdto.RegisterRequestDTO;
 import com.backendapi.api.dtos.reqdto.UpdataUserDto;
+import com.backendapi.api.dtos.respdto.UserResponse;
 import com.backendapi.api.dtos.respdto.WrapLoginResultAndDto;
 import com.backendapi.api.model.UserModel;
 import com.backendapi.api.model.enums.LoginResult;
@@ -62,12 +63,12 @@ public class UserController {
     }
     
     @GetMapping("/user")
-    ResponseEntity<List<UserModel>> getAllUser(){
+    ResponseEntity<List<UserResponse>> getAllUser(){
         return new ResponseEntity<>(userService.fetchAllUser(),HttpStatus.OK) ;
     }
 
     @GetMapping("/user/{id}")
-    ResponseEntity<UserModel> getUserId(@PathVariable  Long id){
+    ResponseEntity<UserResponse> getUserId(@PathVariable  Long id){
         return userService.fetchUser(id)
         .map(ResponseEntity:: ok).orElseGet(()-> ResponseEntity.notFound().build());
     }
