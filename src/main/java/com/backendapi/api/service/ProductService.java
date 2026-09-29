@@ -1,6 +1,8 @@
 package com.backendapi.api.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -58,5 +60,8 @@ public class ProductService {
                 return mapToProductResponse(savedProduct);
             });
         
+    }
+    public List<ProductResponse> getAllProduct(){
+        return productRepo.findAll().stream().map(this::mapToProductResponse).collect(Collectors.toList()) ;
     }
 }

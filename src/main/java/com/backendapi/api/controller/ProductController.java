@@ -1,5 +1,7 @@
 package com.backendapi.api.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,5 +33,10 @@ public class ProductController {
     @PutMapping("/update/{id}")
     ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @RequestBody ProductRequest productRequest){
         return productService.updateProduct(id,productRequest).map(ResponseEntity :: ok).orElseGet(()-> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/")
+    ResponseEntity<List<ProductResponse>> getAllProduct( ){
+     return new ResponseEntity<>(productService.getAllProduct(),HttpStatus.OK);   
     }
 }
