@@ -1,0 +1,14 @@
+package com.backendapi.api.repo;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.backendapi.api.model.CartItemsModel;
+import com.backendapi.api.model.UserModel;
+import com.backendapi.api.model.ProductModel;
+
+@Repository 
+public interface CartItemsRepo extends JpaRepository<CartItemsModel,Long> {
+    CartItemsModel findbyUserAndProduct(UserModel user, ProductModel productModel);
+    
+}
