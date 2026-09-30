@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backendapi.api.dtos.reqdto.ProductRequest;
@@ -45,5 +46,10 @@ public class ProductController {
     ResponseEntity<Void> deleteProduct(@PathVariable Long id){
      Boolean delete = productService.deleteProduct(id);
         return delete ? ResponseEntity.noContent().build():ResponseEntity.notFound().build();
+    }
+
+    @GetMapping ("/search")
+    ResponseEntity<List<ProductResponse>> searchProducts (@RequestParam String keyword){
+        return ResponseEntity.ok(productService.searchProducts(keyword));
     }
 }

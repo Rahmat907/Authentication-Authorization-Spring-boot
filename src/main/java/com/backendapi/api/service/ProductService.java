@@ -70,7 +70,9 @@ public class ProductService {
             productRepo.deleteById(id);
             return true;
         }
-
         return false;
+    }
+    public List<ProductResponse> searchProducts(String keyword){
+        return  productRepo.searchProducts(keyword).stream().map(this :: mapToProductResponse).collect(Collectors.toList());
     }
 }
