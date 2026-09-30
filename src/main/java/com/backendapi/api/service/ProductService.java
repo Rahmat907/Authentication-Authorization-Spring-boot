@@ -64,4 +64,13 @@ public class ProductService {
     public List<ProductResponse> getAllProduct(){
         return productRepo.findAll().stream().map(this::mapToProductResponse).collect(Collectors.toList()) ;
     }
+
+    public boolean deleteProduct(Long id ){
+        if(productRepo.existsById(id)){
+            productRepo.deleteById(id);
+            return true;
+        }
+
+        return false;
+    }
 }
