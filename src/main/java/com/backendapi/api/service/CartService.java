@@ -12,7 +12,11 @@ import com.backendapi.api.repo.CartItemsRepo;
 import com.backendapi.api.repo.ProductRepo;
 import com.backendapi.api.repo.UserRepo;
 
+import jakarta.transaction.Transactional;
+
+
 @Service
+@Transactional 
 public class CartService {
     public final CartItemsRepo cartItemsRepo;
     public final ProductRepo productRepo;
@@ -55,5 +59,23 @@ public class CartService {
             cartItemsRepo.save(newCart);
         }
         return true;
+    }
+    public Boolean deleteCartItems(String userId, Long productId){
+            Optional<ProductModel> productOpt = productRepo.findById(productId);
+        if (productOpt.isEmpty())
+            return false;
+
+        Optional<UserModel> userOptional = userRepo.findById(Long.parseLong(userId));
+
+        if (userOptional.isEmpty())
+            return false;
+
+       return userOptional.flatMap(
+            user -> productOpt.map(product -> {
+                cartItemsRepo.deleteByUserAndProduct(user,product);
+                return true;
+            })
+        ).orElse(false);
+       
     }
 }
