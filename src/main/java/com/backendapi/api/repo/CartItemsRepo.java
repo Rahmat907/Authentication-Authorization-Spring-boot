@@ -1,5 +1,7 @@
 package com.backendapi.api.repo;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +13,5 @@ import com.backendapi.api.model.ProductModel;
 public interface CartItemsRepo extends JpaRepository<CartItemsModel,Long> {
     CartItemsModel findByUserAndProduct(UserModel user, ProductModel productModel);
     void deleteByUserAndProduct(UserModel user, ProductModel product);
+    List<CartItemsModel> findByUser(UserModel user);
 }

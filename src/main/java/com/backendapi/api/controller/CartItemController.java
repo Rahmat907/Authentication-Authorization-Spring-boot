@@ -1,5 +1,7 @@
 package com.backendapi.api.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backendapi.api.dtos.reqdto.CartItemRequest;
 import com.backendapi.api.service.CartService;
+import com.backendapi.api.model.CartItemsModel;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,6 +43,9 @@ public class CartItemController {
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
-    // @GetMapping("/{userId}")
-    // ResponseEntity<>
+    @GetMapping("/")
+    ResponseEntity<List<CartItemsModel>> fetchCartItems(@RequestHeader("X-USER-ID") String userId){
+         
+         return new ResponseEntity<>(cartService.fetchCartItems(userId),HttpStatus.OK);
+    }
 }

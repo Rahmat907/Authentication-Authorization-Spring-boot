@@ -1,10 +1,12 @@
 package com.backendapi.api.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.backendapi.api.dtos.reqdto.CartItemRequest;
+import com.backendapi.api.dtos.respdto.CartResponse;
 import com.backendapi.api.model.CartItemsModel;
 import com.backendapi.api.model.ProductModel;
 import com.backendapi.api.model.UserModel;
@@ -76,6 +78,12 @@ public class CartService {
                 return true;
             })
         ).orElse(false);
-       
+    }
+
+    public List<CartItemsModel>fetchCartItems(String userId){
+        
+    return userRepo.findById(Long.valueOf(userId))
+        .map(cartItemsRepo :: findByUser)
+        .orElseGet(List :: of);
     }
 }
