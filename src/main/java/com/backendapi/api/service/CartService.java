@@ -11,15 +11,18 @@ import com.backendapi.api.model.UserModel;
 import com.backendapi.api.repo.CartItemsRepo;
 import com.backendapi.api.repo.ProductRepo;
 import com.backendapi.api.repo.UserRepo;
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class CartService {
     public final CartItemsRepo cartItemsRepo;
     public final ProductRepo productRepo;
     public final UserRepo userRepo;
 
+    public CartService (CartItemsRepo cartItemsRepo,ProductRepo productRepo,UserRepo userRepo){
+        this.cartItemsRepo = cartItemsRepo;
+        this.productRepo = productRepo;
+        this.userRepo = userRepo;
+    }
     public boolean addToCart(String userId, CartItemRequest cartItemRequest) {
         // look for product
         Optional<ProductModel> productOpt = productRepo.findById(cartItemRequest.getProductid());
@@ -38,15 +41,15 @@ public class CartService {
 
         UserModel user = userOptional.get();
 
-        CartItemsModel existingcart = cartItemsRepo.findbyUserAndProduct(user,productModel);
+        CartItemsModel existingcart = cartItemsRepo.findByUserAndProduct(user,productModel);
         if(existingcart != null){
             // update the qunatity
             existingcart.setQuantity(existingcart.getQuantity() + cartItemRequest.getQuantity());
         }else{
             // create new cart
             CartItemsModel newCart = new CartItemsModel();
-            newCart.setProductModel(productModel);
-            newCart.setUserModel(user);
+            newCart.setProduct(productModel);
+            newCart.setUser(user);
             newCart.setQuantity(cartItemRequest.getQuantity());
 
             cartItemsRepo.save(newCart);

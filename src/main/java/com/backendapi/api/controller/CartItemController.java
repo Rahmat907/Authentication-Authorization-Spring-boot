@@ -14,7 +14,7 @@ import com.backendapi.api.service.CartService;
 import lombok.RequiredArgsConstructor;
 
 @RestController 
-@RequestMapping ("/api/cart/")
+@RequestMapping ("/api/cart")
 @RequiredArgsConstructor 
 public class CartItemController {
 

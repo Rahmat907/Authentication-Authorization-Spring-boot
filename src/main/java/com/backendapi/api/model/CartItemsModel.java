@@ -26,10 +26,10 @@ public class CartItemsModel {
     private  Long id;
     @ManyToOne 
     @JoinColumn (name = "user_id",nullable = false)
-    private  UserModel userModel;
+    private  UserModel user;
     @ManyToOne 
     @JoinColumn (name = "product_id", nullable = false)
-    private  ProductModel productModel;
+    private  ProductModel product;
     private Integer quantity;
 
     @CreationTimestamp 

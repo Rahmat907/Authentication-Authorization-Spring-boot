@@ -9,6 +9,6 @@ import com.backendapi.api.model.ProductModel;
 
 @Repository 
 public interface CartItemsRepo extends JpaRepository<CartItemsModel,Long> {
-    CartItemsModel findbyUserAndProduct(UserModel user, ProductModel productModel);
+    CartItemsModel findByUserAndProduct(UserModel user, ProductModel productModel);
     
 }
