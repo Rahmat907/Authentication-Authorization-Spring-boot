@@ -45,7 +45,7 @@ public class CartItemController {
 
     @GetMapping("/")
     ResponseEntity<List<CartItemsModel>> fetchCartItems(@RequestHeader("X-USER-ID") String userId){
-         
+        
          return new ResponseEntity<>(cartService.fetchCartItems(userId),HttpStatus.OK);
     }
 }
